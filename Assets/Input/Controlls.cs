@@ -44,6 +44,15 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""202c5e76-d907-4779-aee5-9626beee3627"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7a74246-a67e-4a6f-8516-e48d0e59698d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ControlScheme1"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -132,6 +152,15 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""93e54a2e-40f8-4a27-a1b8-d3637926fec8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""45415ed2-a406-4f4b-91fa-f742350b16b6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -204,6 +233,45 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""614968b6-902d-47e2-baf9-bcffb9a2326a"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ControlScheme1"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""GameControlMap"",
+            ""id"": ""6066f6d6-6618-4d46-820a-c834f7701970"",
+            ""actions"": [
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""f7ea035d-17a9-4773-9cbb-1dd6e7bed369"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fa938ba1-396b-4937-a55f-6bed31ee5052"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -226,10 +294,15 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         m_ActionMap1 = asset.FindActionMap("ActionMap1", throwIfNotFound: true);
         m_ActionMap1_Move = m_ActionMap1.FindAction("Move", throwIfNotFound: true);
         m_ActionMap1_Jump = m_ActionMap1.FindAction("Jump", throwIfNotFound: true);
+        m_ActionMap1_Throw = m_ActionMap1.FindAction("Throw", throwIfNotFound: true);
         // ActionMap2
         m_ActionMap2 = asset.FindActionMap("ActionMap2", throwIfNotFound: true);
         m_ActionMap2_Move = m_ActionMap2.FindAction("Move", throwIfNotFound: true);
         m_ActionMap2_Jump = m_ActionMap2.FindAction("Jump", throwIfNotFound: true);
+        m_ActionMap2_Throw = m_ActionMap2.FindAction("Throw", throwIfNotFound: true);
+        // GameControlMap
+        m_GameControlMap = asset.FindActionMap("GameControlMap", throwIfNotFound: true);
+        m_GameControlMap_Reset = m_GameControlMap.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,12 +366,14 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     private List<IActionMap1Actions> m_ActionMap1ActionsCallbackInterfaces = new List<IActionMap1Actions>();
     private readonly InputAction m_ActionMap1_Move;
     private readonly InputAction m_ActionMap1_Jump;
+    private readonly InputAction m_ActionMap1_Throw;
     public struct ActionMap1Actions
     {
         private @Controlls m_Wrapper;
         public ActionMap1Actions(@Controlls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_ActionMap1_Move;
         public InputAction @Jump => m_Wrapper.m_ActionMap1_Jump;
+        public InputAction @Throw => m_Wrapper.m_ActionMap1_Throw;
         public InputActionMap Get() { return m_Wrapper.m_ActionMap1; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -314,6 +389,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
         }
 
         private void UnregisterCallbacks(IActionMap1Actions instance)
@@ -324,6 +402,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
         }
 
         public void RemoveCallbacks(IActionMap1Actions instance)
@@ -347,12 +428,14 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     private List<IActionMap2Actions> m_ActionMap2ActionsCallbackInterfaces = new List<IActionMap2Actions>();
     private readonly InputAction m_ActionMap2_Move;
     private readonly InputAction m_ActionMap2_Jump;
+    private readonly InputAction m_ActionMap2_Throw;
     public struct ActionMap2Actions
     {
         private @Controlls m_Wrapper;
         public ActionMap2Actions(@Controlls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_ActionMap2_Move;
         public InputAction @Jump => m_Wrapper.m_ActionMap2_Jump;
+        public InputAction @Throw => m_Wrapper.m_ActionMap2_Throw;
         public InputActionMap Get() { return m_Wrapper.m_ActionMap2; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -368,6 +451,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
         }
 
         private void UnregisterCallbacks(IActionMap2Actions instance)
@@ -378,6 +464,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
         }
 
         public void RemoveCallbacks(IActionMap2Actions instance)
@@ -395,6 +484,52 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         }
     }
     public ActionMap2Actions @ActionMap2 => new ActionMap2Actions(this);
+
+    // GameControlMap
+    private readonly InputActionMap m_GameControlMap;
+    private List<IGameControlMapActions> m_GameControlMapActionsCallbackInterfaces = new List<IGameControlMapActions>();
+    private readonly InputAction m_GameControlMap_Reset;
+    public struct GameControlMapActions
+    {
+        private @Controlls m_Wrapper;
+        public GameControlMapActions(@Controlls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Reset => m_Wrapper.m_GameControlMap_Reset;
+        public InputActionMap Get() { return m_Wrapper.m_GameControlMap; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameControlMapActions set) { return set.Get(); }
+        public void AddCallbacks(IGameControlMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameControlMapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameControlMapActionsCallbackInterfaces.Add(instance);
+            @Reset.started += instance.OnReset;
+            @Reset.performed += instance.OnReset;
+            @Reset.canceled += instance.OnReset;
+        }
+
+        private void UnregisterCallbacks(IGameControlMapActions instance)
+        {
+            @Reset.started -= instance.OnReset;
+            @Reset.performed -= instance.OnReset;
+            @Reset.canceled -= instance.OnReset;
+        }
+
+        public void RemoveCallbacks(IGameControlMapActions instance)
+        {
+            if (m_Wrapper.m_GameControlMapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameControlMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameControlMapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameControlMapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameControlMapActions @GameControlMap => new GameControlMapActions(this);
     private int m_ControlScheme1SchemeIndex = -1;
     public InputControlScheme ControlScheme1Scheme
     {
@@ -408,10 +543,16 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
     public interface IActionMap2Actions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
+    }
+    public interface IGameControlMapActions
+    {
+        void OnReset(InputAction.CallbackContext context);
     }
 }

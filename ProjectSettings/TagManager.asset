@@ -11,12 +11,12 @@ TagManager:
   - Ground
   - Water
   - UI
-  - Player
+  - Player1
   - Rope
-  - 
-  - 
-  - 
-  - 
+  - Player2
+  - Deadzone
+  - Winzone
+  - Tutorialzone
   - 
   - 
   - 
